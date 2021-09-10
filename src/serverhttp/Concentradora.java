@@ -1,7 +1,7 @@
 
 package serverhttp;
 
-//import com.fazecast.jSerialComm.SerialPort;
+import com.fazecast.jSerialComm.SerialPort;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class Concentradora implements HttpHandler
 {
-    //SerialPort sp;
+    SerialPort sp;
     
     public void imprime(String url)
     {
@@ -58,6 +58,20 @@ public class Concentradora implements HttpHandler
                 imprime("numero de argumentos: " + argc);
                 turnOnActuador(argv[0]);
             }
+            
+            //AQUI HAY QUE CREAR UN SWICT O ALGUN CONTROL PARA
+                //MANDAR LLAMAR EL METODO CORRESPONDIENTE
+                //switch(metodo)
+                //if
+                //O ALGUN OTRO TIPO DE FLUJO DE OCNTROL 
+                turnOnActuador(argumentos);          
+                
+                
+                /*
+                DESPUES DE RECIBIR Y PROCESAR EL REQUEST
+                DEBEMOS ENVIAR UN RESPONSE A LA APP CLIENTE
+                PUEDE SER UN SIMPLE "OK"
+                */
         }
         
         throw new UnsupportedOperationException("NotSupported yet");//To change body of generated methods, choose Tools | Templates.
@@ -65,11 +79,48 @@ public class Concentradora implements HttpHandler
     
     public void turnOnActuador(String tarjeta)
     {
+        // este metodo es para encender un actuador
+        // pero primero hay que ir al diccionario o a un archivo
+        // a consultar el valor del nombre de la tarjeta proporcionada
+        // para concatenarlo al string y completar el comando
         byte[] buffer = {0x00, 0x00, 0x34};
-        /*sp = SerialPort.getCommPort("com3");
+        sp = SerialPort.getCommPort("com3");
         sp.openPort();
         sp.writeBytes(buffer, buffer.length);
         imprime("Enciendo la tarjeta: " + tarjeta);
-        sp.closePort();*/
+        sp.closePort();
+    }
+    
+    public void turnOffActuador(String tarjeta)
+    {
+        // Esté metodo es para mandar el comando de apagar
+        byte[] buffer={0x00,0x00,0x34};
+        sp = SerialPort.getCommPort("com3");
+        sp.openPort();
+        sp.writeBytes(buffer, buffer.length);
+        sp.closePort();
+        imprime("Enciendo la tarjeta: "+tarjeta);
+    }
+    
+    public void turnOnLedColor(String tarjeta, String color){
+    
+        // Esté metodo es para mandar el comando de encender en un color especifico
+        byte[] buffer={0x00,0x00,0x34};
+        sp = SerialPort.getCommPort("com3");
+        sp.openPort();
+        sp.writeBytes(buffer, buffer.length);
+        sp.closePort();
+        imprime("Enciendo la tarjeta: "+tarjeta);        
+    }   
+    
+    public void sendComand(String comando)
+    {        
+        //este metodo es para enviar el comando a la tarjeta concentradora
+        byte[] buffer={0x00,0x00,0x34};
+        sp = SerialPort.getCommPort("com3");
+        sp.openPort();
+        sp.writeBytes(buffer, buffer.length);
+        sp.closePort();
+        imprime("envio comando: "+comando);        
     }
 }
